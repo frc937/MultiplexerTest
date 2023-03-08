@@ -31,6 +31,11 @@ public class TCA9548A {
     return result[0];
   }
 
+  public void dumbMethod() {
+    multiplexer.write(portNum, 255);
+    System.out.println(this.getEnabledBusses());
+  }
+
   public void setBus(int busNumber) {
     if (busNumber >= 8 || busNumber < 0) {
       System.out.println("Invalid bus number!");

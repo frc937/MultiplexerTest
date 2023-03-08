@@ -52,13 +52,13 @@ public class Robot extends TimedRobot {
   public void robotInit() {
   
     multiplexer = new TCA9548A();
-    multiplexer.setBus(1);
+    //multiplexer.setBus(2);
     /*distOnboard = new Rev2mDistanceSensor(Port.kMXP);
     distOnboard.setDistanceUnits(Unit.kMillimeters);*/
 
     //color = new ColorSensorV3(Port.kMXP);
     
-    colorI2C = new I2C(Port.kMXP, 0x52);
+    //colorI2C = new I2C(Port.kMXP, 0x52);
   
     m_motor = new Spark(deviceID);
 
@@ -66,6 +66,8 @@ public class Robot extends TimedRobot {
 
 
    controller = new XboxController(0);
+
+   //multiplexer.setBus(1);
   }
 
   /**
@@ -113,7 +115,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    multiplexer.setBus(1);
+    //multiplexer.setBus(2);
     /*distOnboard.setAutomaticMode(true);
       if(distOnboard.isRangeValid()) {
           SmartDashboard.putNumber("Range Onboard", distOnboard.getRange());
@@ -127,13 +129,20 @@ public class Robot extends TimedRobot {
       SmartDashboard.putNumber("Blue", color.getBlue());
       SmartDashboard.putNumber("Green", color.getGreen());*/
 
-      byte[] colorReading = new byte[2];
+      /*byte[] colorReading = new byte[2];
 
       colorI2C.read(0x08, 2, colorReading);
 
       System.out.println(colorReading);
 
-      multiplexer.setBus(0);
+      multiplexer.setBus(1);*/
+
+      /*multiplexer.setBus(2);
+      System.out.println("BUS NUMBER: " + multiplexer.getEnabledBusses());
+      multiplexer.setBus(4);
+      System.out.println("BUS NUMBER: " + multiplexer.getEnabledBusses());*/
+
+      multiplexer.dumbMethod();
 
       SmartDashboard.putNumber("Pressure reading", pressure.getVoltage());
 
