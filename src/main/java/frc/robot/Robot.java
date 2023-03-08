@@ -9,6 +9,7 @@ import com.revrobotics.Rev2mDistanceSensor.Unit;
 import com.revrobotics.*;
 
 import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.I2C.Port;
@@ -34,6 +35,7 @@ public class Robot extends TimedRobot {
   private TCA9548A multiplexer;
   private Rev2mDistanceSensor distOnboard;
   private ColorSensorV3 color;
+  private I2C colorI2C;
   private XboxController controller;
   private static final int deviceID = 1; // pwm port
   //private CANSparkMax m_motor;
@@ -54,7 +56,9 @@ public class Robot extends TimedRobot {
     /*distOnboard = new Rev2mDistanceSensor(Port.kMXP);
     distOnboard.setDistanceUnits(Unit.kMillimeters);*/
 
-    color = new ColorSensorV3(Port.kMXP);
+    //color = new ColorSensorV3(Port.kMXP);
+    
+    colorI2C = new I2C(Port.kMXP, 0x52);
   
     m_motor = new Spark(deviceID);
 
@@ -119,9 +123,16 @@ public class Robot extends TimedRobot {
 
       SmartDashboard.putBoolean("Valid range", distOnboard.isRangeValid());
       distOnboard.setAutomaticMode(false);*/
-      SmartDashboard.putNumber("Red", color.getRed());
+      /*SmartDashboard.putNumber("Red", color.getRed());
       SmartDashboard.putNumber("Blue", color.getBlue());
-      SmartDashboard.putNumber("Green", color.getGreen());
+      SmartDashboard.putNumber("Green", color.getGreen());*/
+
+      byte[] colorReading = new byte[2];
+
+      colorI2C.read(0x08, 2, colorReading);
+
+      System.out.println(colorReading);
+
       multiplexer.setBus(0);
 
       SmartDashboard.putNumber("Pressure reading", pressure.getVoltage());
