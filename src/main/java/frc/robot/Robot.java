@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import com.revrobotics.Rev2mDistanceSensor.RangeProfile;
 //import com.revrobotics.Rev2mDistanceSensor.Port;
 import com.revrobotics.Rev2mDistanceSensor.Unit;
 import com.revrobotics.*;
@@ -37,7 +38,7 @@ public class Robot extends TimedRobot {
   private ColorSensorV3 color;
   private I2C colorI2C;
   private XboxController controller;
-  private static final int deviceID = 1; // pwm port
+  private static final int deviceID = 2; // pwm port
   //private CANSparkMax m_motor;
   private Spark m_motor;
 
@@ -52,13 +53,13 @@ public class Robot extends TimedRobot {
   public void robotInit() {
   
     multiplexer = new TCA9548A();
-    //multiplexer.setBus(2);
-    /*distOnboard = new Rev2mDistanceSensor(Port.kMXP);
-    distOnboard.setDistanceUnits(Unit.kMillimeters);*/
+    multiplexer.setBus(0);
+    distOnboard = new Rev2mDistanceSensor(Rev2mDistanceSensor.Port.kMXP);
+    distOnboard.setDistanceUnits(Unit.kInches);
+    distOnboard.setRangeProfile(RangeProfile.kLongRange);
+    distOnboard.setAutomaticMode(true);
 
     //color = new ColorSensorV3(Port.kMXP);
-    
-    //colorI2C = new I2C(Port.kMXP, 0x52);
   
     m_motor = new Spark(deviceID);
 
@@ -115,34 +116,18 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    //multiplexer.setBus(2);
-    /*distOnboard.setAutomaticMode(true);
+    multiplexer.setBus(1);
       if(distOnboard.isRangeValid()) {
           SmartDashboard.putNumber("Range Onboard", distOnboard.getRange());
           SmartDashboard.putNumber("Timestamp Onboard", distOnboard.getTimestamp());
 
       }
-
       SmartDashboard.putBoolean("Valid range", distOnboard.isRangeValid());
-      distOnboard.setAutomaticMode(false);*/
       /*SmartDashboard.putNumber("Red", color.getRed());
       SmartDashboard.putNumber("Blue", color.getBlue());
-      SmartDashboard.putNumber("Green", color.getGreen());*/
-
-      /*byte[] colorReading = new byte[2];
-
-      colorI2C.read(0x08, 2, colorReading);
-
-      System.out.println(colorReading);
-
-      multiplexer.setBus(1);*/
-
-      /*multiplexer.setBus(2);
-      System.out.println("BUS NUMBER: " + multiplexer.getEnabledBusses());
-      multiplexer.setBus(4);
-      System.out.println("BUS NUMBER: " + multiplexer.getEnabledBusses());*/
-
-      multiplexer.dumbMethod();
+      SmartDashboard.putNumber("Green", color.getGreen());
+      SmartDashboard.putNumber("Proximity", color.getProximity());*/
+      multiplexer.setBus(0);
 
       SmartDashboard.putNumber("Pressure reading", pressure.getVoltage());
 
