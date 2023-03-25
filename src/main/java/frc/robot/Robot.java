@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import com.revrobotics.Rev2mDistanceSensor.RangeProfile;
 //import com.revrobotics.Rev2mDistanceSensor.Port;
 import com.revrobotics.Rev2mDistanceSensor.Unit;
 import com.revrobotics.*;
@@ -35,7 +36,7 @@ public class Robot extends TimedRobot {
   private Rev2mDistanceSensor distOnboard;
   private ColorSensorV3 color;
   private XboxController controller;
-  private static final int deviceID = 1; // pwm port
+  private static final int deviceID = 2; // pwm port
   //private CANSparkMax m_motor;
   private Spark m_motor;
 
@@ -50,11 +51,13 @@ public class Robot extends TimedRobot {
   public void robotInit() {
   
     multiplexer = new TCA9548A();
-    multiplexer.setBus(1);
-    /*distOnboard = new Rev2mDistanceSensor(Port.kMXP);
-    distOnboard.setDistanceUnits(Unit.kMillimeters);*/
+    multiplexer.setBus(0);
+    distOnboard = new Rev2mDistanceSensor(Rev2mDistanceSensor.Port.kMXP);
+    distOnboard.setDistanceUnits(Unit.kInches);
+    distOnboard.setRangeProfile(RangeProfile.kLongRange);
+    distOnboard.setAutomaticMode(true);
 
-    color = new ColorSensorV3(Port.kMXP);
+    //color = new ColorSensorV3(Port.kMXP);
   
     m_motor = new Spark(deviceID);
 
@@ -110,18 +113,16 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     multiplexer.setBus(1);
-    /*distOnboard.setAutomaticMode(true);
       if(distOnboard.isRangeValid()) {
           SmartDashboard.putNumber("Range Onboard", distOnboard.getRange());
           SmartDashboard.putNumber("Timestamp Onboard", distOnboard.getTimestamp());
 
       }
-
       SmartDashboard.putBoolean("Valid range", distOnboard.isRangeValid());
-      distOnboard.setAutomaticMode(false);*/
-      SmartDashboard.putNumber("Red", color.getRed());
+      /*SmartDashboard.putNumber("Red", color.getRed());
       SmartDashboard.putNumber("Blue", color.getBlue());
       SmartDashboard.putNumber("Green", color.getGreen());
+      SmartDashboard.putNumber("Proximity", color.getProximity());*/
       multiplexer.setBus(0);
 
       SmartDashboard.putNumber("Pressure reading", pressure.getVoltage());
